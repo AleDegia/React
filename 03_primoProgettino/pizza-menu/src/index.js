@@ -60,10 +60,11 @@ const pizzaData = [
 function Header() {
   return <h1>Fast React Pizza</h1>
 }
-//passo al componente Pizza le props ingredient, photoName e price
+
 function Menu() {
   const pizzas = pizzaData;
   const numPizzas = pizzas.length;
+
   return(
     <main className="menu">
       <h2>Our menu</h2>
@@ -80,9 +81,10 @@ function Menu() {
     </main>
   )
 }
+
 function Footer(){
   const hour = new Date().getHours();
-  const openHour = 12;
+  const openHour = 10;
   const closeHour = 22;
   const isOpen = hour >= openHour && hour <= closeHour;
 
@@ -90,29 +92,43 @@ function Footer(){
   //si fa cosi perchè jsx non asccetta istruzioni come if else statement, quindi si usa un operatore ternario oppure uno short circuit evaluation
   return (
     <footer className="footer">
-      {isOpen && (
-        <div className="order">
-          <p>
-            We're open until {closeHour}:00. Come visit us or order online.
-          </p>
-
-          <button className="btn">Order</button>
-        </div>
+      {isOpen ? (
+        <Order closeHour={closeHour} openHour={openHour} />
+      ) : (
+        <p>
+          We're happy to welcome you between {openHour}:00 and {closeHour}:00.
+        </p>
       )}
     </footer>
   );
 }
 
+//uso props destructuring per prendere le proprietà dell'oggetto props e usarle direttamente (spiegato sotto)
+function Order({closeHour, openHour}) {
+  return (
+    <div className="order">
+      <p>
+        We're open from {openHour}:00 to {closeHour}:00. Come visit us or order online.
+      </p>
+      <button className="btn">Order</button>
+    </div>
+  );
+}
+
 //componente che mostro piu volte inserendolo in quello principale che viene displayato con root.render (App)
-function Pizza(props) {
+function Pizza(pizzaObj) {
+if(pizzaObj.soldOut){
+  return null; //se la pizza è sold out non la mostro. posso usare if perchè sto dentro una funzione, se fossi dentro un return (jsx)non potrei usare if 
+}
+  //uso props destructuring per prendere le proprietà dell'oggetto pizzaObj e usarle direttamente 
   return (
   <div className="pizza">
-    <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
+    <img src={pizzaObj.photoName} alt={pizzaObj.name} />
 
     <div>
-      <h3>{props.pizzaObj.name}</h3>
-      <p>{props.pizzaObj.ingredients}</p>
-      <span>{props.pizzaObj.price + 3}</span>
+      <h3>{pizzaObj.name}</h3>
+      <p>{pizzaObj.ingredients}</p>
+      <span>{pizzaObj.price + 3}</span>
     </div>
   </div>
   );
@@ -130,6 +146,17 @@ root.render(
 
 /*
 key: È un identificatore che React usa per capire quale elemento dell'elenco è quale.
-name: È semplicemente un dato che passi al componente:
+name: È semplicemente un dato che passi al componente
+
+function Order({ closeHour, openHour })   è equivalente a:
+
+function Order(props) {
+  const { closeHour, openHour } = props;
+
+  // ...
+}
+
+uso {} dentro funzione Order() per fare ciò
+
 */
 
