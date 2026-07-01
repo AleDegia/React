@@ -62,17 +62,21 @@ function Header() {
 }
 //passo al componente Pizza le props ingredient, photoName e price
 function Menu() {
+  const pizzas = pizzaData;
+  const numPizzas = pizzas.length;
   return(
     <main className="menu">
-      <h2>Out menu</h2>
+      <h2>Our menu</h2>
+      
+      {numPizzas > 0 ? (            //se il numero di pizze è maggiore di 0 allora mostro la lista delle pizze, sennò messaggio che dice che il menu non è pronto
       <ul className="pizzas">
-       {pizzaData.map((pizza) => (
+       {pizzaData.map((pizza) => (  //map mi permette di ciclare su un array e restituire un nuovo array con i valori che voglio
         <Pizza
           pizzaObj = {pizza}
           key={pizza.name}
         />
        ))}
-      </ul>
+      </ul>) : <p>We're still working on our menu. Please come back later!</p>}
     </main>
   )
 }
@@ -82,12 +86,20 @@ function Footer(){
   const closeHour = 22;
   const isOpen = hour >= openHour && hour <= closeHour;
 
-  /*if (hour >= openHour && hour <= closeHour)
-    alert("We're currently open!");
-  else
-    alert("Sorry we're closed");*/
-  return(
-    <footer className="footer">{new Date().toLocaleTimeString} We are currently open</footer>
+  //se isOpen è true allora mostro il paragrafo con scritto Open ed il bottone(short circuit evaluation)
+  //si fa cosi perchè jsx non asccetta istruzioni come if else statement, quindi si usa un operatore ternario oppure uno short circuit evaluation
+  return (
+    <footer className="footer">
+      {isOpen && (
+        <div className="order">
+          <p>
+            We're open until {closeHour}:00. Come visit us or order online.
+          </p>
+
+          <button className="btn">Order</button>
+        </div>
+      )}
+    </footer>
   );
 }
 
