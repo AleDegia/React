@@ -42,17 +42,17 @@ const pizzaData = [
     soldOut: false,
   },
   {
-    name: "Pizza Diavola",
+    name: "Pizza Salamino",
     ingredients: "Tomato, mozzarella, spicy salami",
     price: 13,
-    photoName: "pizzas/diavola.jpg",
+    photoName: "pizzas/salamino.jpg",
     soldOut: false,
   },
   {
-    name: "Pizza Quattro Formaggi",
+    name: "Pizza Prosciutto",
     ingredients: "Mozzarella, gorgonzola, parmesan, fontina",
     price: 14,
-    photoName: "pizzas/quattro-formaggi.jpg",
+    photoName: "pizzas/prosciutto.jpg",
     soldOut: true,
   },
 ];
@@ -70,14 +70,23 @@ function Menu() {
       <h2>Our menu</h2>
       
       {numPizzas > 0 ? (            //se il numero di pizze è maggiore di 0 allora mostro la lista delle pizze, sennò messaggio che dice che il menu non è pronto
-      <ul className="pizzas">
-       {pizzaData.map((pizza) => (  //map mi permette di ciclare su un array e restituire un nuovo array con i valori che voglio
-        <Pizza
-          pizzaObj = {pizza}
-          key={pizza.name}
-        />
-       ))}
-      </ul>) : <p>We're still working on our menu. Please come back later!</p>}
+      <>                            
+        <p>
+          Authentic Italian cuisine. 6 creative dishes to choose from. All
+          from our stone oven, all organic, all delicious.
+        </p>
+        <ul className="pizzas">
+        {pizzas.map((pizza) => (  //map mi permette di ciclare su un array e restituire un nuovo array con i valori che voglio
+          <Pizza
+            pizzaObj = {pizza}
+            key={pizza.name}
+          />
+        ))}
+        </ul>
+      </>
+      ) : (
+      <p>We're still working on our menu. Please come back later!</p>
+      )}
     </main>
   )
 }
@@ -116,19 +125,16 @@ function Order({closeHour, openHour}) {
 }
 
 //componente che mostro piu volte inserendolo in quello principale che viene displayato con root.render (App)
-function Pizza(pizzaObj) {
-if(pizzaObj.soldOut){
-  return null; //se la pizza è sold out non la mostro. posso usare if perchè sto dentro una funzione, se fossi dentro un return (jsx)non potrei usare if 
-}
+function Pizza({pizzaObj}) {
   //uso props destructuring per prendere le proprietà dell'oggetto pizzaObj e usarle direttamente 
   return (
-  <div className="pizza">
+  <div className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
     <img src={pizzaObj.photoName} alt={pizzaObj.name} />
 
     <div>
       <h3>{pizzaObj.name}</h3>
       <p>{pizzaObj.ingredients}</p>
-      <span>{pizzaObj.price + 3}</span>
+      <span>{pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price}</span>
     </div>
   </div>
   );
