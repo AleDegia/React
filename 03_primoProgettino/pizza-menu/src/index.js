@@ -12,8 +12,52 @@ function App() {
   );
 }
 
+const pizzaData = [
+  {
+    name: "Focaccia",
+    ingredients: "Bread with Italian olive oil and rosemary",
+    price: 6,
+    photoName: "pizzas/focaccia.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Margherita",
+    ingredients: "Tomato and mozzarella",
+    price: 10,
+    photoName: "pizzas/margherita.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Spinaci",
+    ingredients: "Tomato, mozzarella, spinach, and ricotta cheese",
+    price: 12,
+    photoName: "pizzas/spinaci.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Funghi",
+    ingredients: "Tomato, mozzarella, mushrooms",
+    price: 11,
+    photoName: "pizzas/funghi.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Diavola",
+    ingredients: "Tomato, mozzarella, spicy salami",
+    price: 13,
+    photoName: "pizzas/diavola.jpg",
+    soldOut: false,
+  },
+  {
+    name: "Pizza Quattro Formaggi",
+    ingredients: "Mozzarella, gorgonzola, parmesan, fontina",
+    price: 14,
+    photoName: "pizzas/quattro-formaggi.jpg",
+    soldOut: true,
+  },
+];
+
 function Header() {
-  
   return <h1>Fast React Pizza</h1>
 }
 //passo al componente Pizza le props ingredient, photoName e price
@@ -21,18 +65,14 @@ function Menu() {
   return(
     <main className="menu">
       <h2>Out menu</h2>
-      <Pizza    
-        name="Pizza Spinaci"
-        ingredients="Tomato, mozarella, spinach, and ricotta cheese"
-        photoName="pizzas/spinaci.jpg"
-        price={10}
-      /> 
-      <Pizza
-        name="Pizza Funghi"
-        ingredients="Tomato, mushrooms"
-        price={12}
-        photoName="pizzas/funghi.jpg"
-    />
+      <ul className="pizzas">
+       {pizzaData.map((pizza) => (
+        <Pizza
+          pizzaObj = {pizza}
+          key={pizza.name}
+        />
+       ))}
+      </ul>
     </main>
   )
 }
@@ -55,12 +95,12 @@ function Footer(){
 function Pizza(props) {
   return (
   <div className="pizza">
-    <img src={props.photoName} alt={props.name} />
+    <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
 
     <div>
-      <h3>{props.name}</h3>
-      <p>{props.ingredients}</p>
-      <span>{props.price + 3}</span>
+      <h3>{props.pizzaObj.name}</h3>
+      <p>{props.pizzaObj.ingredients}</p>
+      <span>{props.pizzaObj.price + 3}</span>
     </div>
   </div>
   );
@@ -77,11 +117,7 @@ root.render(
 );
 
 /*
-In function Menu() {} sto riutilizzando lo stesso componente Pizza due volte,
-passando info diverse. È esattamente come chiamare una funzione due volte con parametri diversi.
-è React che la chiama ogni volta che trova <Pizza /> nel JSX.
-
-è come se pizza nel jsx fosse la chiamata al metodo coi vari parametri che gli passo, 
-mentre il componente function Pizza(props) fossa la definizione del metodo
+key: È un identificatore che React usa per capire quale elemento dell'elenco è quale.
+name: È semplicemente un dato che passi al componente:
 */
 
